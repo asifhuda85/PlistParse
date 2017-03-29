@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var allItems = [Model]()
+    var imageUrl: String?
+    @IBOutlet weak var myTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -39,12 +41,23 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = allItems[indexPath.row]
-        print(model.image)
+
+        self.performSegue(withIdentifier: "segue", sender: model)
+   
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return allItems.count
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segue" {
+            if let destination = segue.destination as? ImageViewController {
+                let model = sender as! Model
+                destination.imageURL = model.image
+            }
+        }
     }
 
 }
